@@ -16,6 +16,26 @@ export async function startDiscordBot(): Promise<void> {
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates],
   });
 
+  // Interaction handler for slash commands (e.g. /ssu)
+  client.on(Events.InteractionCreate, async (interaction) => {
+    try {
+      if (!interaction.isChatInputCommand()) return;
+
+      if (interaction.commandName === "ssu") {
+        const colore = interaction.options.getString("colore", true);
+        const map: Record<string, string> = {
+          verde: "✅ Verde",
+          giallo: "🟡 Giallo",
+          rosso: "🔴 Rosso",
+        };
+        const stato = map[colore] ?? colore;
+        await interaction.reply({ content: `Hai selezionato: ${stato}`, ephemeral: true });
+      }
+    } catch (err) {
+      logger.error({ err }, "Failed to handle interaction");
+    }
+  });
+
   client.once(Events.ClientReady, (readyClient) => {
     void startVoiceAssistant(readyClient).catch((error: unknown) => {
       logger.error({ err: error }, "Failed to start voice support assistant");
