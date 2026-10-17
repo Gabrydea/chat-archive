@@ -17,6 +17,7 @@ import { startVoiceAssistant } from "./voice-assistant";
 
 const STAFF_ROLE_ID = process.env["STAFF_ROLE_ID"] ?? "1553669607712227398"; // puoi sovrascrivere con env
 const ROLE_MENTION = `<@&${STAFF_ROLE_ID}>`;
+const TICKET_CATEGORY_ID = process.env["TICKET_CATEGORY_ID"] ?? "1561100984229437560"; // category where tickets go
 
 // testuali in lowercase (small caps richiesti dall'utente -> usiamo lowercase)
 const PANEL_TITLE = "ticket e assistenza";
@@ -206,6 +207,7 @@ export async function startDiscordBot(): Promise<void> {
             type: ChannelType.GuildText,
             permissionOverwrites: overwrites,
             reason: `ticket aperto da ${interaction.user.id}`,
+            parent: TICKET_CATEGORY_ID,
           });
 
           const ticketEmbed = new EmbedBuilder()
