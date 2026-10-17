@@ -1,0 +1,1 @@
+- [Discord voice runtime](discord-voice-runtime.md) — il login e i permessi funzionano, ma la VC richiede UDP in uscita per completare il negoziato audio.
