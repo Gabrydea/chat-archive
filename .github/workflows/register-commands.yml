@@ -1,32 +1,20 @@
-name: Register Discord Commands
+  - name: Setup pnpm
+    uses: pnpm/action-setup@v4
+    with:
+      version: 10
 
-on:
-  workflow_dispatch:
+  - name: Setup Node.js
+    uses: actions/setup-node@v4
+    with:
+      node-version: 20
+      cache: pnpm
 
-jobs:
-  register:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+  - name: Install dependencies
+    run: pnpm install --frozen-lockfile
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Register slash commands
-        env:
-          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
-          DISCORD_APP_ID: ${{ secrets.DISCORD_APP_ID }}
-          GUILD_ID: ${{ secrets.GUILD_ID }}
-        run: pnpm dlx tsx ./scripts/register-commands.ts
+  - name: Register slash commands
+    env:
+      DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+      DISCORD_APP_ID: ${{ secrets.DISCORD_APP_ID }}
+      GUILD_ID: ${{ secrets.GUILD_ID }}
+    run: pnpm dlx tsx ./scripts/register-commands.ts
