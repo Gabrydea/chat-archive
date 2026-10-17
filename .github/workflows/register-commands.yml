@@ -10,46 +10,27 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: pnpm
+
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10
+          version: '10'
 
-      - name: Setup
-- GitHub non riesce a leggere il file e lo rifiuta prima ancora di eseguire i passi
+      - name: Debug environment
+        run: |
+          echo "Node version:" && node -v
+          echo "pnpm version:" && pnpm -v
+          echo "List repo root:" && ls -la
+          echo "Check scripts file exists:" && [ -f ./scripts/register-commands.ts ] && echo "OK" || echo "MISSING"
 
-Il punto chiave è che la sintassi è sbagliata, molto probabil you had earlier:
-- `on: workflow_dispatch:`
-- `jobs: register: runs-on: ubuntu-latest steps: ...`
-
-That is all collapsed onto one line / wrong YAML nesting.
-
-The correct format is:
-
-```yaml
-name: Register Discord Commands
-
-on:
-  workflow_dispatch:
-
- plain English:
-- the file is not valid YAML
-- GitHub is not even trying to run the job
-- the failure is at syntax level, before the commandmente come questa:
-- on: workflow_dispatch:
-- jobs: register: runs-on: ubuntu-latest ...
-invece di essere separata correttamente con righe e indentazione giusti.
-
-La forma corretta deve essere:
-
- Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      - name: Install dependencies (with fallback)
+        run: |
+          pnpm install --frozen-lockfile || pnpm install
 
       - name: Register slash commands
         env:
