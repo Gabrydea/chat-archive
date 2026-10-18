@@ -2,10 +2,6 @@ import { REST, Routes } from "discord.js";
 
 const commands = [
   {
-    name: "ticket",
-    description: "apri il pannello ticket per assistenza",
-  },
-  {
     name: "ssu",
     description: "pubblica lo stato del server",
     options: [
