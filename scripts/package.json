@@ -7,6 +7,9 @@
     "hello": "tsx ./src/hello.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
+  "dependencies": {
+    "discord.js": "^14.27.0"
+  },
   "devDependencies": {
     "@types/node": "catalog:",
     "tsx": "catalog:"
